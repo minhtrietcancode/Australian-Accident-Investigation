@@ -88,8 +88,41 @@ plt.xticks(rotation=0)
 # Step 5: Save it
 plt.tight_layout()
 plt.savefig('Task_3_lightcondition.png', dpi=300)
-plt.show()
 
 '''
     REQUIREMENT 3: Analyze the relationship between SEVERITY level and the number of victims of different types
 '''
+# Firstly remove row with NaN values at our targeted columns
+third_target = ['SEVERITY', 'NO_PERSONS_KILLED', 'NO_PERSONS_INJ_2', 'NO_PERSONS_INJ_3']
+third_accident = accident.dropna(subset=third_target)
+
+'''
+- This piece of code is just to check the values of each columns 
+severity = third_accident['SEVERITY']
+kill = third_accident['NO_PERSONS_KILLED']
+two = third_accident['NO_PERSONS_INJ_2']
+three = third_accident['NO_PERSONS_INJ_3']
+
+checking = [severity, kill, two, three]
+for check in checking:
+    print(check.value_counts(dropna=False))
+    print('\n')
+'''
+
+# Step 2: Group by severity and sum up the number of victims
+grouped_victims = third_accident.groupby('SEVERITY')[['NO_PERSONS_KILLED', 'NO_PERSONS_INJ_2', 'NO_PERSONS_INJ_3']].sum()
+
+# Step 3: Plot stacked bar chart
+colors = ['#fb6a4a', '#fcae91', '#fee5d9']  # red for killed, then lighter for injured
+
+grouped_victims.plot(kind='bar', stacked=True, figsize=(10, 6), color=colors)
+
+plt.title('Victim Types by Severity Level')
+plt.xlabel('Severity Level')
+plt.ylabel('Number of Victims')
+plt.legend(['Killed', 'Serious Injuries', 'Minor Injuries'])
+plt.xticks(rotation=0)
+
+# Save the figure
+plt.tight_layout()
+plt.savefig('Task_3_injuries.png', dpi=300)
