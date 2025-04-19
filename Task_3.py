@@ -49,4 +49,36 @@ plt.title('Correlation between severity levels, number of vehicles involved, and
 # Save the plot
 plt.savefig('Task_3_heatmap.png', dpi=300, bbox_inches='tight')  # high quality + trims whitespace
 
-plt.show()
+'''
+    REQUIREMENT 2: Comparing severity level between different LIGHT_CONDITION categories 
+'''
+# Firstly remove rows with NaN values at the columns of this requirement
+second_target_col = ['SEVERITY', 'LIGHT_CONDITION']
+second_cleaned_accident = accident.dropna(subset = second_target_col)
+
+'''
+- This piece of code is just to verify that all of the data entry of these 2 columns are in corerct format 
+severity = second_cleaned_accident['SEVERITY']
+light_condition = second_cleaned_accident['LIGHT_CONDITION']
+
+checking_col = [severity, light_condition]
+for check in checking_col:
+    print(check.value_counts(dropna=False))
+'''
+
+# Group by LIGHT_CONDITION and SEVERITY, then count
+grouped = second_cleaned_accident.groupby(['LIGHT_CONDITION', 'SEVERITY']).size().reset_index(name='count')
+pivot_table = grouped.pivot(index='LIGHT_CONDITION', columns='SEVERITY', values='count')
+
+# And now plot the grouped bar chart
+pivot_table.plot(kind='bar', figsize=(10, 6))
+
+plt.title('Severity Levels by Light Condition')
+plt.xlabel('Light Condition')
+plt.ylabel('Number of Accidents')
+plt.legend(title='Severity')
+plt.xticks(rotation=0)
+
+# And then save the figure
+plt.tight_layout()
+plt.savefig('Task_3_lightcondition.png', dpi=300)
