@@ -2,7 +2,7 @@
 # We will focus on these points for task 3:
 #     + Generate a heat map showing the correlation between SEVERITY, NO_OF_VEHICLES, and SPEED_ZONE
 #       --> save as Task_3_heatmap.png
-#     + Create a grouped bar chart comparing severity levels across different LIGHT_CONDITION categories
+#     + Create a stacked bar chart comparing severity levels across different LIGHT_CONDITION categories
 #       --> save as Task_3_lightcondition.png
 #     + Analyze the relationship between SEVERITY and NO_PERSONS_KILLED / NO_PERSON_INJ_2 / NO_PERSON_INJ_3
 #       --> save as Task_3_injuries.png
@@ -66,19 +66,30 @@ for check in checking_col:
     print(check.value_counts(dropna=False))
 '''
 
-# Group by LIGHT_CONDITION and SEVERITY, then count
+# Step 2: Group and pivot
 grouped = second_cleaned_accident.groupby(['LIGHT_CONDITION', 'SEVERITY']).size().reset_index(name='count')
-pivot_table = grouped.pivot(index='LIGHT_CONDITION', columns='SEVERITY', values='count')
+pivot_table = grouped.pivot(index='LIGHT_CONDITION', columns='SEVERITY', values='count').fillna(0)
 
-# And now plot the grouped bar chart
-pivot_table.plot(kind='bar', figsize=(10, 6))
+# Ensure severity levels are in order (1 to 4)
+pivot_table = pivot_table[[1, 2, 3, 4]] if set([1,2,3,4]).issubset(pivot_table.columns) else pivot_table
 
-plt.title('Severity Levels by Light Condition')
+# Step 3: Define custom colors (lighter to darker)
+colors = ['#c6dbef', '#6baed6', '#3182bd', '#08519c']  # light blue → dark blue
+
+# Step 4: Plot stacked bar chart
+pivot_table.plot(kind='bar', stacked=True, figsize=(10, 6), color=colors)
+
+plt.title('Stacked Bar Chart of Severity Levels by Light Condition')
 plt.xlabel('Light Condition')
 plt.ylabel('Number of Accidents')
-plt.legend(title='Severity')
+plt.legend(title='Severity Level')
 plt.xticks(rotation=0)
 
-# And then save the figure
+# Step 5: Save it
 plt.tight_layout()
 plt.savefig('Task_3_lightcondition.png', dpi=300)
+plt.show()
+
+'''
+    REQUIREMENT 3: Analyze the relationship between SEVERITY level and the number of victims of different types
+'''
