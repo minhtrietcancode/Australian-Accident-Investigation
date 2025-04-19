@@ -26,7 +26,7 @@ def Task_1():
     stop_words = set(stopwords.words('english'))
     
     # Read the CSV data
-    df = pd.read_csv('accident.csv')
+    df = pd.read_csv('../accident.csv')
     
     # Extract the serie pf description from dataframe and 
     # then remove all of the entry with NaN value, also make sure everything will be string

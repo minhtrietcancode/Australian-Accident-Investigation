@@ -83,7 +83,7 @@ def Task_2():
         (saved as task2_2_stackbar.png) using a custom light-to-dark colour scheme from Morning to Late Night.
     """
     # Read the dataset
-    df = pd.read_csv("accident.csv")
+    df = pd.read_csv("../accident.csv")
 
     # Set of English stopwords
     stop_words = set(stopwords.words('english'))

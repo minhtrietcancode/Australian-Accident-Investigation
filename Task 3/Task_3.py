@@ -12,7 +12,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Load the dataset into a df for future processing
-accident = pd.read_csv('accident.csv')
+accident = pd.read_csv('../accident.csv')
 
 '''
     REQUIREMENT 1: WORKING WITH THE CORRELATION BETWEEN SEVERITY, NO_OF_VEHICLES, and SPEED_ZONE
