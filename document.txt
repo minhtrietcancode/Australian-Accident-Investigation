@@ -1,9 +1,105 @@
 Some key points that we will work on these two datasets
 
-- Task 1: We will use the BoW techniques to identify the most 20 common words in the accident.csv dataset to identify 
-some potential problems among these million of accident --> this will provide a fundamental observation for some of
-the main reasons for these accidents
+########################################################################################################################
+                                                        TASK 1
+########################################################################################################################
+- TOP 20 MOST COMMON WORDS THAT APPEAR ACROSS THE DATASET DESCRIPTION FOR THE ACCIDENTS
+Implement the function that reads in the accident dataset and outputs a word cloud for
+DCA_DESC , with the column processed according to the following criteria:
+    + Converts all text to lowercase.
+    + Removes punctuation and stop words.
+    + Applies the Bag of Words (BoW) technique to identify key accident-related terms.
+  The word cloud should visualise the 20 most frequent words occurring in accident descriptions. And then save the figure
+  as Task_1_word_cloud.png
 
-- Task 2: Convert the time of the accident into just 4 categories: Morning, Afternoon, Evening, Late Night and then
+########################################################################################################################
+                                                        TASK 2
+########################################################################################################################
+- INVESTIGATING SOME OF THE SPECIAL DAYS IN THE WEEK OF THE 4 CATEGORIES OF A DAY
+- Convert the time of the accident into just 4 categories: Morning, Afternoon, Evening, Late Night and then
 create some charts to visualize the problems of some specific days, and the distribution of the accidents among these
 4 categories
+- And then generate these following figures for visualization
+    + A bar chart comparing the number of accidents in each TIME_OF_DAY category --> save as Task_2_timeofday.png
+    + For each TIME_OF_DAY category, identify the 10 most frequent words in the DCA_DESC column
+      --> save as Task_2_wordpies.png
+    + For Mondays, Fridays, and Sundays, we will compare the number of accidents in each TIME_OF_DAY category using
+      stacked bar charts --> save as Task_2_stackbar.png
+
+########################################################################################################################
+                                                        TASK 3
+########################################################################################################################
+- SEVERITY ANALYSIS
+We will focus on these points for task 3:
+    + Generate a heat map showing the correlation between SEVERITY, NO_OF_VEHICLES, and SPEED_ZONE
+      --> save as Task_3_heatmap.png
+    + Create a grouped bar chart comparing severity levels across different LIGHT_CONDITION categories
+      --> save as Task_3_lightcondition.png
+    + Analyze the relationship between SEVERITY and NO_PERSONS_KILLED / NO_PERSON_INJ_2 / NO_PERSON_INJ_3
+      --> save as Task_3_injuries.png
+
+########################################################################################################################
+                                                        TASK 4
+########################################################################################################################
+- TEMPORAL PATTERN ANALYSIS
+For task 4, we will focus on these things:
+    + Create a new column MONTH by extracting the month from ACCIDENT_DATE
+    + Generate a line plot showing the monthly distribution of accidents
+      --> save as Task_4_monthly.png
+    + Create a heatmap visualization showing accident frequency by day of week and time of day
+      --> save as Task_4_weekday_time_heatmap.png
+    + Identify seasonal patterns in accident types using appropriate visualizations
+      --> save as Task_4_seasonal.png
+
+########################################################################################################################
+                                                        TASK 5
+########################################################################################################################
+- GEOGRAPHICAL CLUSTERING
+For task 5, we will focus on these things:
+    + Identify the top 10 accident-prone locations (NODE_ID)
+    + For these locations, analyze the most common ACCIDENT_TYPE_DESC and DCA_DESC
+      --> save as Task_5_hotspots.png
+    + Create visualizations comapring these high-risk locations in terms of severity and time patterns
+      --> save as Task_5_hotspot_comparison.png
+
+########################################################################################################################
+                                                        TASK 6
+########################################################################################################################
+- ROAD GEOMETRY IMPACT ANALYSIS
+- With this task we will focus on these points:
+    + Calculate the accident severity distribution across different ROAD_GEOMETRY_DESC categories
+      --> save as Task_6_geometry_severity.png
+    + Create a violin plot showing the distribution of NO_PERSON_INJ_2 for each road geometry type
+      --> save as Task_6_geometry_injuries.png
+    + Compare the relationship between SPEED_ZONE and ROAD_GEOMETRY_DESC using appropriate visualizations
+      --> save as Task_6_geometry_speed.png
+
+########################################################################################################################
+                                                        TASK 7
+########################################################################################################################
+- Vehicle Involvement Analysis
+    + Group accidents by NO_OF_VEHICLES and analyze their severity levels.
+    + Create a bar chart showing the distribution of accidents by number of vehicles.
+    + For accidents with 3+ vehicles, identify the most common DCA_DESC and ACCIDENT_TYPE_DESC.
+Save as task7_vehicle_severity.png, task7_vehicle_distribution.png, and task7_multi_vehicle.png.
+
+########################################################################################################################
+                                                        TASK 8
+########################################################################################################################
+- Police Attendance Analysis
+    + Calculate the percentage of accidents where police attended, grouped by SEVERITY.
+    + Compare POLICE_ATTEND rates across different times of day and days of week.
+    + Analyze the relationship between POLICE_ATTEND and injury/fatality counts.
+Save as task8_police_severity.png, task8_police_temporal.png, and task8_police_injuries.png.
+
+########################################################################################################################
+                                                        TASK 9
+########################################################################################################################
+- Advanced NLP on Accident Descriptions
+    + Apply sentiment analysis to the DCA_DESC and ACCIDENT_TYPE_DESC fields.
+    + Use topic modeling (e.g., LDA) to identify latent topics within accident descriptions.
+    + Create visualizations showing the most distinctive words for each accident severity level.
+    + Generate a network diagram showing relationships between common terms in accident descriptions.
+Save as task9_sentiment.png, task9_topics.png, task9_distinctive_words.png, and task9_network.png.
+
+########################################################################################################################
