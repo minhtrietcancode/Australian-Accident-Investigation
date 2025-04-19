@@ -1,3 +1,9 @@
-Some key points that we will work on these two datasets 
+Some key points that we will work on these two datasets
+
 - Task 1: We will use the BoW techniques to identify the most 20 common words in the accident.csv dataset to identify 
-some potential problems among these million of accident
+some potential problems among these million of accident --> this will provide a fundamental observation for some of
+the main reasons for these accidents
+
+- Task 2: Convert the time of the accident into just 4 categories: Morning, Afternoon, Evening, Late Night and then
+create some charts to visualize the problems of some specific days, and the distribution of the accidents among these
+4 categories
