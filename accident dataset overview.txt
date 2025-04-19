@@ -1,0 +1,29 @@
+Accident Dataset
+- Total rows: 178,695
+- Number of columns: 23
+- COLUMNS AND DESCRIPTIONS
+    o ACCIDENT_NO: Unique identifier for each accident.
+    o ACCIDENT_DATE: Date when the accident occurred.
+    o ACCIDENT_TIME: Time of the accident.
+    o ACCIDENT_TYPE: Encoded value representing the type of accident.
+    o ACCIDENT_TYPE_DESC: Description of the type of accident.
+    o DAY_OF_WEEK: Encoded value representing the day of the week.
+    o DAY_WEEK_DESC: Description of the day of the week.
+    o DCA_CODE: Encoded value representing the detailed crash analysis
+    category.
+    o DCA_DESC: Description of the detailed crash analysis category.
+    o LIGHT_CONDITION: Lighting condition at the time of the accident.
+    o NODE_ID: Identifier for the accident location node.
+    o NO_OF_VEHICLES: Number of vehicles involved in the accident.
+    o NO_PERSONS_KILLED: Number of fatalities recorded in the accident.
+    o NO_PERSONS_INJ_2: Number of people sustaining serious injuries.
+    o NO_PERSONS_INJ_3: Number of people sustaining minor injuries.
+    o NO_PERSONS_NOT_INJ: Number of people involved in the accident who
+    were not injured.
+    o NO_PERSONS: Total number of people involved in the accident.
+    o POLICE_ATTEND: Indicator of whether police attended the accident scene.
+    o ROAD_GEOMETRY: Encoded value representing the type of road geometry.
+    o ROAD_GEOMETRY_DESC: Description of the road geometry.
+    o SEVERITY: Severity level of the accident.
+    o SPEED_ZONE: Speed limit in the accident area.
+    o RMA: Encoded value representing road management authority classification.

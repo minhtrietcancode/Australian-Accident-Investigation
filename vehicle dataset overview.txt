@@ -1,0 +1,42 @@
+VEHICLE DATASET
+- Total rows: 325,889
+- Number of columns: 37
+- COLUMNS AND DESCRIPTION:
+    o ACCIDENT_NO: Unique identifier for each accident.
+    o VEHICLE_ID: Unique identifier for each vehicle involved.
+    o VEHICLE_YEAR_MANUF: Year of vehicle manufacture.
+    o VEHICLE_DCA_CODE: Encoded value representing detailed crash analysis
+    for the vehicle.
+    o INITIAL_DIRECTION: Initial direction of travel.
+    o ROAD_SURFACE_TYPE: Type of road surface.
+    o ROAD_SURFACE_TYPE_DESC: Description of the road surface.
+    o REG_STATE: State of vehicle registration.
+    o VEHICLE_BODY_STYLE: Body style of the vehicle.
+    o VEHICLE_MAKE: Manufacturer of the vehicle.
+    o VEHICLE_MODEL: Model of the vehicle.
+    o VEHICLE_POWER: Power output of the vehicle.
+    o VEHICLE_TYPE: Type of vehicle.
+    o VEHICLE_TYPE_DESC: Description of vehicle type.
+    o VEHICLE_WEIGHT: Weight of the vehicle.
+    o CONSTRUCTION_TYPE: Construction type of the vehicle.
+    o FUEL_TYPE: Fuel type of the vehicle.
+    o NO_OF_WHEELS: Number of wheels on the vehicle.
+    o NO_OF_CYLINDERS: Number of engine cylinders.
+    o SEATING_CAPACITY: Seating capacity of the vehicle.
+    o TARE_WEIGHT: Unladen weight of the vehicle.
+    o TOTAL_NO_OCCUPANTS: Total number of occupants.
+    o CARRY_CAPACITY: Carrying capacity of the vehicle.
+    o CUBIC_CAPACITY: Engine cubic capacity.
+    o FINAL_DIRECTION: Final direction of travel.
+    o DRIVER_INTENT: Driver’s intended maneuver.
+    o VEHICLE_MOVEMENT: Movement of the vehicle before the accident.
+    o TRAILER_TYPE: Type of trailer attached (if any).
+    o VEHICLE_COLOUR_1: Primary color of the vehicle.
+    o VEHICLE_COLOUR_2: Secondary color of the vehicle.
+    o CAUGHT_FIRE: Whether the vehicle caught fire.
+    o INITIAL_IMPACT: Point of initial impact.
+    o LAMPS: Status of vehicle lamps.
+    o LEVEL_OF_DAMAGE: Extent of damage to the vehicle.
+    o TOWED_AWAY_FLAG: Whether the vehicle was towed away.
+    o TRAFFIC_CONTROL: Type of traffic control at the scene.
+    o TRAFFIC_CONTROL_DESC: Description of the traffic control.
