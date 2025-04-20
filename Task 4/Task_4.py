@@ -114,3 +114,91 @@ plt.ylabel('Day of Week')
 plt.tight_layout()
 plt.savefig('Task_4_weekday_time_heatmap.png', dpi=300)
 
+'''
+    REQUIREMENT 3: Identify seasonal patterns in accident types using appropriate visualizations
+                   --> save as Task_4_seasonal.png
+    Columns to use:
+        + ACCIDENT_TYPE_DESC: Description of the type of accident.
+        + ACCIDENT_DATE: Time of the accident.
+'''
+
+'''
+- This one is to check the possible values of the type of accident 
+- We can conclude that we do not need to clean the data for this requirement 
+type = df['ACCIDENT_TYPE_DESC']
+print(type.value_counts(dropna=False))
+
+ACCIDENT_TYPE_DESC
+Collision with vehicle               116007
+Collision with a fixed object         26998
+Struck Pedestrian                     14696
+Vehicle overturned (no collision)      8447
+No collision and no object struck      7391
+Struck animal                          1920
+collision with some other object       1865
+Fall from or in moving vehicle         1188
+Other accident                          183
+Name: count, dtype: int64
+'''
+
+# Now we need to write a function to convert ACCIDENT_DATE to season time: Spring, Summer, Autumn, Winter
+def convert_to_season(time):
+    # Note that ACCIDENT_DATE has format "YYYY-MM-DD"
+    month = int(time[5:7])
+
+    # remember this is the dataset of australia
+    season_map = {'Spring': (9, 10, 11),
+                  'Summer': (12, 1, 2),
+                  'Autumn': (3, 4, 5),
+                  'Winter': (6, 7, 8)}
+
+    for key in season_map.keys():
+        if month in season_map[key]:
+            return key
+
+# And now create a new column called 'SEASON' for the dataframe based on ACCIDENT_DATE
+df['SEASON'] = df['ACCIDENT_DATE'].astype(str).apply(convert_to_season)
+
+# Function to group the ACCIDENT_TYPE_DESC into just 6 categories, group the common descriptions into a single group
+def simplify_accident_type(desc):
+    if desc in ['Collision with vehicle', 'collision with some other object']:
+        return 'Vehicle Collision'
+    elif desc == 'Collision with a fixed object':
+        return 'Fixed Object'
+    elif desc == 'Struck Pedestrian':
+        return 'Pedestrian'
+    elif desc in ['Vehicle overturned (no collision)', 'No collision and no object struck']:
+        return 'Overturned/No Collision'
+    elif desc == 'Struck animal':
+        return 'Animal'
+    elif desc in ['Fall from or in moving vehicle', 'Other accident']:
+        return 'Fall/Other'
+    else:
+        return 'Other'
+
+# Apply grouping
+df['ACCIDENT_TYPE_GROUPED'] = df['ACCIDENT_TYPE_DESC'].apply(simplify_accident_type)
+
+# Step 1: Group and count
+seasonal_group = df.groupby(['SEASON', 'ACCIDENT_TYPE_GROUPED']).size().reset_index(name='count')
+
+# Step 2: Pivot the data for stacking
+pivot_df = seasonal_group.pivot(index='SEASON', columns='ACCIDENT_TYPE_GROUPED', values='count').fillna(0)
+
+# Optional: Define season order (to appear in correct order)
+season_order = ['Summer', 'Autumn', 'Winter', 'Spring']
+pivot_df = pivot_df.reindex(season_order)
+
+# Step 3: Plot
+pivot_df.plot(kind='bar', stacked=True, figsize=(12, 7), colormap='tab20')
+
+plt.title('Seasonal Patterns in Accident Types')
+plt.xlabel('Season')
+plt.ylabel('Number of Accidents')
+plt.legend(title='Accident Type Related To', bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.tight_layout()
+
+# Save the figure
+plt.savefig('Task_4_seasonal.png', dpi=300)
+
+
