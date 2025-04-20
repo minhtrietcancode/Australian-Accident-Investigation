@@ -248,3 +248,180 @@ for i, node_id in enumerate(top_10_node):
 
 plt.tight_layout()
 plt.savefig('Task_5_individual_location_analysis.png', dpi=300, bbox_inches='tight')
+
+'''
+    REQUIREMENT 2: Create visualizations comparing these high-risk locations in terms of severity and time patterns
+                   --> save as Task_5_hotspot_comparison.png
+'''
+# This function is to process time patterns ACCIDENT_TIME
+def get_time_of_day(accident_time):
+    """
+    Convert an accident time string in 'HH:MM:SS' format into a time-of-day category.
+    Returns "Unknown" if the input is not in the expected format or has an invalid hour.
+    """
+    try:
+        # Extract the hour part safely
+        hour = int(accident_time[:2])  # First two characters represent the hour
+    except ValueError:
+        return "Unknown"
+
+    # Ensure the hour is within a valid range
+    if 0 <= hour < 6:
+        return "Late Night"
+    elif 6 <= hour < 12:
+        return "Morning"
+    elif 12 <= hour < 18:
+        return "Afternoon"
+    elif 18 <= hour < 24:
+        return "Evening"
+    else:
+        return "Unknown"  # Handle cases where hour is out of range
+
+
+'''
+    REQUIREMENT 2: Create visualizations comparing these high-risk locations in terms of severity and time patterns
+                   --> save as Task_5_hotspot_comparison.png
+'''
+# Apply the time of day function to categorize accident times
+filtered_df.loc[:, 'TIME_OF_DAY'] = filtered_df['ACCIDENT_TIME'].apply(get_time_of_day)
+
+# Set the style
+plt.style.use('ggplot')
+sns.set_palette("colorblind")
+
+# Create figure with 2 rows
+fig, axes = plt.subplots(2, 1, figsize=(16, 14))
+
+# Panel 1: Severity Analysis
+# Create a crosstab of NODE_ID vs Severity
+severity_crosstab = pd.crosstab(filtered_df['NODE_ID'], filtered_df['SEVERITY'])
+
+# Calculate the percentage of each severity level for each NODE_ID
+severity_percentage = severity_crosstab.div(severity_crosstab.sum(axis=1), axis=0) * 100
+
+# Sort NODE_IDs by total accident count for consistency
+node_order = filtered_df['NODE_ID'].value_counts().index.tolist()
+severity_percentage = severity_percentage.reindex(node_order)
+
+# Create a stacked bar chart for severity
+severity_percentage.plot(kind='bar', stacked=True, ax=axes[0], colormap='RdYlGn_r')
+axes[0].set_title('Distribution of Accident Severity Across Top 10 High-Risk Locations', fontsize=16)
+axes[0].set_xlabel('NODE_ID', fontsize=12)
+axes[0].set_ylabel('Percentage (%)', fontsize=12)
+axes[0].legend(title='Severity Level', bbox_to_anchor=(1.05, 1), loc='upper left')
+axes[0].set_xticklabels(axes[0].get_xticklabels(), rotation=45)
+
+# Add total accident count as text above each bar
+for i, node in enumerate(node_order):
+    total = filtered_df[filtered_df['NODE_ID'] == node].shape[0]
+    axes[0].text(i, 105, f'n={total}', ha='center', fontsize=10)
+
+# Panel 2: Time Pattern Analysis
+# Create a crosstab of NODE_ID vs Time of Day
+time_crosstab = pd.crosstab(filtered_df['NODE_ID'], filtered_df['TIME_OF_DAY'])
+
+# Calculate the percentage of each time category for each NODE_ID
+time_percentage = time_crosstab.div(time_crosstab.sum(axis=1), axis=0) * 100
+
+# Reorder columns in a logical sequence
+time_order = ['Morning', 'Afternoon', 'Evening', 'Late Night', 'Unknown']
+time_percentage = time_percentage.reindex(columns=[col for col in time_order if col in time_percentage.columns])
+
+# Reorder rows by total accident count
+time_percentage = time_percentage.reindex(node_order)
+
+# Create a stacked bar chart for time of day
+time_percentage.plot(kind='bar', stacked=True, ax=axes[1], colormap='viridis')
+axes[1].set_title('Distribution of Accident Time of Day Across Top 10 High-Risk Locations', fontsize=16)
+axes[1].set_xlabel('NODE_ID', fontsize=12)
+axes[1].set_ylabel('Percentage (%)', fontsize=12)
+axes[1].legend(title='Time of Day', bbox_to_anchor=(1.05, 1), loc='upper left')
+axes[1].set_xticklabels(axes[1].get_xticklabels(), rotation=45)
+
+# Add hourly heatmap below the main plots
+plt.tight_layout()
+plt.subplots_adjust(bottom=0.25)  # Make room for the heatmap
+
+# Create a third subplot for hourly distribution heatmap
+ax3 = fig.add_axes([0.1, 0.05, 0.8, 0.15])  # [left, bottom, width, height]
+
+
+# Extract hour from ACCIDENT_TIME and create hourly bins
+def extract_hour(time_str):
+    try:
+        return int(time_str[:2])
+    except (ValueError, TypeError):
+        return np.nan
+
+
+filtered_df.loc[:, 'HOUR'] = filtered_df['ACCIDENT_TIME'].apply(extract_hour)
+
+# Create a pivot table for the heatmap: NODE_ID vs Hour
+hourly_data = pd.pivot_table(
+    filtered_df.dropna(subset=['HOUR']),
+    values='SEVERITY',  # Using SEVERITY just to count occurrences
+    index='NODE_ID',
+    columns='HOUR',
+    aggfunc='count',
+    fill_value=0
+)
+
+# Reorder rows by total accident count
+hourly_data = hourly_data.reindex(node_order)
+
+# Create the heatmap
+sns.heatmap(hourly_data, cmap='YlOrRd', ax=ax3, cbar_kws={'label': 'Number of Accidents'})
+ax3.set_title('Hourly Distribution of Accidents by Location', fontsize=14)
+ax3.set_xlabel('Hour of Day (24-hour format)', fontsize=12)
+ax3.set_ylabel('NODE_ID', fontsize=12)
+
+# Add a summary table showing key insights
+# Get the most dangerous time period and most common severity for each location
+summary_data = []
+for node in node_order:
+    node_data = filtered_df[filtered_df['NODE_ID'] == node]
+
+    # Most common time of day - safely getting the values using .iloc
+    time_counts = node_data['TIME_OF_DAY'].value_counts(normalize=True)
+    if not time_counts.empty:
+        common_time = time_counts.index[0]
+        time_pct = time_counts.iloc[0] * 100
+    else:
+        common_time = "Unknown"
+        time_pct = 0
+
+    # Most common severity - safely getting the values using .iloc
+    severity_counts = node_data['SEVERITY'].value_counts(normalize=True)
+    if not severity_counts.empty:
+        common_severity = severity_counts.index[0]
+        severity_pct = severity_counts.iloc[0] * 100
+    else:
+        common_severity = "Unknown"
+        severity_pct = 0
+
+    # Most dangerous hour - safely getting the values using .iloc
+    hour_counts = node_data['HOUR'].value_counts(normalize=True)
+    if not hour_counts.empty:
+        dangerous_hour = hour_counts.index[0]
+        hour_pct = hour_counts.iloc[0] * 100
+    else:
+        dangerous_hour = "Unknown"
+        hour_pct = 0
+
+    summary_data.append({
+        'NODE_ID': node,
+        'Total_Accidents': node_data.shape[0],
+        'Common_Time': common_time,
+        'Time_%': time_pct,
+        'Dangerous_Hour': dangerous_hour,
+        'Hour_%': hour_pct,
+        'Common_Severity': common_severity,
+        'Severity_%': severity_pct
+    })
+
+# Save the summary to a CSV file
+summary_df = pd.DataFrame(summary_data)
+summary_df.to_csv('Task_5_hotspot_comparison.csv')
+
+# Save the figure
+plt.savefig('Task_5_hotspot_comparison.png', dpi=300, bbox_inches='tight')
